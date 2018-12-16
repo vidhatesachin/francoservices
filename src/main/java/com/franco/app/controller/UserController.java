@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.franco.app.dataobjects.Branch;
 import com.franco.app.dataobjects.User;
 import com.franco.app.exception.AuthenticationFailureException;
 import com.franco.app.exception.ResourceConflictException;
@@ -85,6 +87,14 @@ public class UserController {
 		User savedUser = this.userRepository.save(user);
 		logger.info("updateUser() ..... End");
 		return new ResponseEntity<User>(savedUser, HttpStatus.OK);
+	}
+	@DeleteMapping(path = "deleteUser/{userId}")
+	public ResponseEntity<HttpStatus> deleteuser(@PathVariable("userId") String userId) {
+		User user = this.userRepository.findOne(Long.parseLong(userId));
+		user.setStatus('I');
+		User savedUser = this.userRepository.save(user);
+		return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+		
 	}
 
 }
